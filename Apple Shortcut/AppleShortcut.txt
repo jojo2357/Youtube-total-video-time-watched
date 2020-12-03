@@ -1,0 +1,12 @@
+NUMBER=0
+SET VARIBALE `time` TO NUMBER
+FIND `all music` (no filter, no sort, no limit)
+REPEAT WITH EACH IN `music`
+    GET `duration` FROM `repeat item`
+    GET `play count` FROM `repeat item`
+    CALCULATE EXPRESSION `play count x duration + time`
+    SET `time` TO `calcualtion result`
+MATH `time / 60`
+FORMAT `calculation result` TO `2 decimal places`
+SET `time` TO `formatted number`
+SHOW `time` `minutes of music listened to`

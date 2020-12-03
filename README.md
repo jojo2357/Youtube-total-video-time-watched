@@ -3,6 +3,9 @@ Spotify basically did their version of a "year in review" for all its users. Thi
 
 I have two accounts, one for music, the other for leisure. There is no feature to look at only music. More unfortunately is that Youtube doesn't keep how long you watch a video for after two weeks ([sounds like another problem](https://www.github.com/jojo2357/GitHub-Views-Logger)) so this just sums the length of all the videos that you have watched in the past year.
 
+# Apple shortcut:
+lets keep this short and sweet: translate what u find there into blocks in the shortcuts app in the iphone
+
 # Setup:
 ### Creating an API token:
 Create a project in the google developer console.
