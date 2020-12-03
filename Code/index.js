@@ -1,8 +1,6 @@
 const https = require('https');
 const fs = require('fs');
-const { JSDOM } = require("jsdom");
-const { window } = new JSDOM("");
-const $ = require('jquery')(window);
+const { apiKey } = require('../clientSecrets.json');
 
 let watchedTime = 0;
 var videosParsed = 0;
@@ -13,10 +11,12 @@ vidData = vidData.filter(vid => Date.now() - Date.parse(vid.time) < 31536000000 
 doingRecursion(0);
 
 function doingRecursion(index){
-    if (index == vidData.length)
-        return;
+    if (index == vidData.length){
+        fs.writeFileSync('lastRun.out', "Total time (seconds): " + formatSecondsAsTime(watchedTime) + ` (${watchedTime}) ` + vidData.length + " videos in the past year. \nAverage time (seconds): " + formatSecondsAsTime(watchedTime / vidData.length) + ` (${(watchedTime / vidData.length).toFixed(5)}) `);
+        process.exit(0);
+    }
     var vid = vidData[index];
-    var req = https.get('https://www.googleapis.com/youtube/v3/videos?part=contentDetails&key=AIzaSyDgz4B66rT6tOClZxjzzO7UW69Stg4jUBc&id=' + vid.titleUrl.split('watch?v\u003d')[1], (res) => {
+    var req = https.get(`https://www.googleapis.com/youtube/v3/videos?part=contentDetails&key=${apiKey}&id=` + vid.titleUrl.split('watch?v\u003d')[1], (res) => {
         var json = '';
 
         res.on('data', function (chunk) {
@@ -39,6 +39,8 @@ function doingRecursion(index){
             } else {
                 console.log(res);
                 console.log('Status:', res.statusCode);
+                if (res.statusCode == 403)
+                    process.exit(2);
             }
             doingRecursion(index + 1);
         });
